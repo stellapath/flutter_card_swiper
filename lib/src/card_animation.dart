@@ -1,6 +1,7 @@
 import 'dart:math' as math;
 import 'dart:ui';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 
@@ -10,20 +11,24 @@ class CardAnimation {
     required this.maxAngle,
     required this.initialScale,
     required this.initialOffset,
+    required this.threshold,
     this.isHorizontalSwipingEnabled = true,
     this.isVerticalSwipingEnabled = true,
     this.allowedSwipeDirection = const AllowedSwipeDirection.all(),
     this.onSwipeDirectionChanged,
+    this.onThresholdReached,
   }) : scale = initialScale;
 
   final double maxAngle;
   final double initialScale;
   final Offset initialOffset;
+  final int threshold;
   final AnimationController animationController;
   final bool isHorizontalSwipingEnabled;
   final bool isVerticalSwipingEnabled;
   final AllowedSwipeDirection allowedSwipeDirection;
   final ValueChanged<CardSwiperDirection>? onSwipeDirectionChanged;
+  final ValueChanged<CardSwiperDirection>? onThresholdReached;
 
   double left = 0;
   double top = 0;
@@ -93,6 +98,18 @@ class CardAnimation {
         onSwipeDirectionChanged?.call(CardSwiperDirection.bottom);
         top += dy;
       }
+    }
+
+    if (left >= threshold) {
+      onThresholdReached?.call(CardSwiperDirection.right);
+    } else if (left <= -threshold) {
+      onThresholdReached?.call(CardSwiperDirection.left);
+    } else if (top >= threshold) {
+      onThresholdReached?.call(CardSwiperDirection.bottom);
+    } else if (top <= -threshold) {
+      onThresholdReached?.call(CardSwiperDirection.top);
+    } else {
+      onThresholdReached?.call(CardSwiperDirection.none);
     }
 
     total = left + top;

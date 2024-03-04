@@ -39,9 +39,11 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
       animationController: _animationController,
       maxAngle: widget.maxAngle,
       initialScale: widget.scale,
+      threshold: widget.threshold,
       allowedSwipeDirection: widget.allowedSwipeDirection,
       initialOffset: widget.backCardOffset,
       onSwipeDirectionChanged: onSwipeDirectionChanged,
+      onThresholdReached: widget.onThresholdReached,
     );
   }
 
@@ -204,6 +206,7 @@ class _CardSwiperState<T extends Widget> extends State<CardSwiper>
 
   void _reset() {
     onSwipeDirectionChanged(CardSwiperDirection.none);
+    widget.onThresholdReached?.call(CardSwiperDirection.none);
     _detectedDirection = CardSwiperDirection.none;
     setState(() {
       _animationController.reset();

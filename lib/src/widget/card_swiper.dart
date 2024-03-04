@@ -124,6 +124,9 @@ class CardSwiper extends StatefulWidget {
   /// Must be a positive value. Defaults to Offset(0, 40).
   final Offset backCardOffset;
 
+  /// Callback function that is called when the swipe threshold is reached.
+  final CardSwiperOnThresholdReached? onThresholdReached;
+
   const CardSwiper({
     required this.cardBuilder,
     required this.cardsCount,
@@ -144,6 +147,7 @@ class CardSwiper extends StatefulWidget {
     this.numberOfCardsDisplayed = 2,
     this.onUndo,
     this.backCardOffset = const Offset(0, 40),
+    this.onThresholdReached,
     super.key,
   })  : assert(
           maxAngle >= 0 && maxAngle <= 360,
